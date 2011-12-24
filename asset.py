@@ -9,6 +9,7 @@ class Asset(ModelSQL, ModelView):
     Fleet Management Asset
     """
     _name = "fleet.asset"
+    _rec_name = 'code'
     _description = "Fleet Management Asset"
 
     code = fields.Char('Code', required=True, select=1)
@@ -16,15 +17,15 @@ class Asset(ModelSQL, ModelView):
         domain=[('category.name', '=', 'Length')])
     status = fields.Selection([
         ('Active', 'Active'),
-        ('Out of Service'),
-        ], "Status", readonly=True)
+        ('Out of Service', 'Out of Service'),
+        ], "Status", readonly=True, select=1)
 
     # Specifications
     year = fields.Integer("Year")
     make = fields.Char("Make")
-    model = fields.Char("Model")
+    model = fields.Char("Model", select=1)
     serial_number = fields.Char("Serial Number")
-    license_plate = fields.Char("Plate Number")
+    license_plate = fields.Char("Plate Number", select=1)
 
     # Purchase
     vendor = fields.Many2One("party.party", "Vendor")

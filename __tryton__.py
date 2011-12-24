@@ -12,6 +12,7 @@
         "account",
     ],
     "xml" : [
+        "asset_view.xml",
     ],
     'translation': [
     ],
