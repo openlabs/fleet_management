@@ -31,6 +31,8 @@
                             <field name="license_plate" />
                         </page>
                         <page string="Purchase" id="purchase">
+                            <label name="vendor" />
+                            <field name="vendor" />
                             <label name="purchase_date" />
                             <field name="purchase_date" />
                             <label name="purchase_meter" />
