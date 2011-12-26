@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<tryton>
+    <data>
+
+        <record model="ir.ui.view" id="fleet_management_employee_form">
+            <field name="model">company.employee</field>
+            <field name="type">form</field>
+            <field name="inherit" ref="company.employee_view_form" />
+            <field name="arch" type="xml">
+                <![CDATA[
+                <data>
+                    <xpath expr="//field[@name='active']" position="after">
+                        <label name="is_driver" />
+                        <field name="is_driver" />
+                    </xpath>
+
+                    <xpath expr="//page[@string='Accounting']" position="after">
+                        <page string="Driver Info" 
+                            states="{'invisible': Not(Bool(Eval('is_driver')))}"
+                            id="driver_info">
+                            <label name="license_number" />
+                            <field name="license_number" />
+                            <label name="expiry_date" />
+                            <field name="expiry_date" />
+                            <separator string="Notes" colspan="4" id="notes_id"/>
+                            <field name="notes" colspan="4"/>
+                        </page>
+                    </xpath>
+                </data>
+                ]]>
+            </field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_employee_form_isdriver">
+            <field name="name">Drivers</field>
+            <field name="res_model">company.employee</field>
+            <field name="domain">[('is_driver', '=', 'True')]</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_employee_form_isdriver_view1">
+            <field name="sequence" eval="10" />
+            <field name="view" ref="company.employee_view_tree" />
+            <field name="act_window" ref="act_employee_form_isdriver" />
+        </record>
+        <record model="ir.action.act_window.view" id="act_employee_form_isdriver_view2">
+            <field name="sequence" eval="20" />
+            <field name="view" ref="fleet_management_employee_form" />
+            <field name="act_window" ref="act_employee_form_isdriver" />
+        </record>
+        <menuitem parent="menu_fleet_management" 
+            action="act_employee_form_isdriver" 
+            id="menu_employee_form_isdriver" sequence="5" />
+
+    </data>
+</tryton>
+

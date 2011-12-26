@@ -2,3 +2,6 @@
 #this repository contains the full copyright notices and license terms.
 
 import asset
+import product
+import purchase
+import employee

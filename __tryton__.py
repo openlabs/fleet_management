@@ -10,9 +10,13 @@
         "company",
         "product",
         "account",
+        "purchase",
     ],
     "xml" : [
         "asset_view.xml",
+        "product.xml",
+        "purchase_view.xml",
+        "employee_view.xml",
     ],
     'translation': [
     ],
