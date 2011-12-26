@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+
+<tryton>
+    <data>
+        <menuitem name="Fleet Management" id="menu_fleet_management"
+            sequence="5" />
+
+        <record model="ir.ui.view" id="fleet_view_form">
+            <field name="model">fleet.asset</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <form string="New Asset">
+                    <label name="code" />
+                    <field name="code" />
+                    <label name="meter_unit" />
+                    <field name="meter_unit" />
+                    <label name="status" />
+                    <field name="status" />
+                    <notebook colspan="4">
+                        <page string="Specifications" id="specification">
+                            <label name="year" />
+                            <field name="year" />
+                            <label name="make" />
+                            <field name="make" />
+                            <label name="model" />
+                            <field name="model" />
+                            <label name="serial_number" />
+                            <field name="serial_number" />
+                            <label name="license_plate" />
+                            <field name="license_plate" />
+                        </page>
+                        <page string="Purchase" id="purchase">
+                            <label name="vendor" />
+                            <field name="vendor" />
+                            <label name="purchase_date" />
+                            <field name="purchase_date" />
+                            <label name="purchase_meter" />
+                            <field name="purchase_meter" />
+                            <label name="warranty_expiration_date" />
+                            <field name="warranty_expiration_date" />
+                            <label name="warranty_expiration_meter" />
+                            <field name="warranty_expiration_meter" />
+                        </page>
+                        <page string="Status" id="status">
+                            <label name="in_service_date" />
+                            <field name="in_service_date" />
+                            <label name="out_of_service_date" />
+                            <field name="out_of_service_date" />
+                        </page>
+                        <page string="Comment" id="comment">
+                            <separator name="comment" colspan="4" />
+                            <field name="comment" colspan="4"/>
+                        </page>
+                    </notebook>
+                </form>
+                ]]>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="fleet_view_tree">
+            <field name="model">fleet.asset</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <![CDATA[
+                <tree string="Assets">
+                    <field name="code" />
+                    <field name="status" />
+                    <field name="model" />
+                    <field name="license_plate" />
+                </tree>
+                ]]>
+            </field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_fleet_form">
+            <field name="name">Assets</field>
+            <field name="res_model">fleet.asset</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_fleet_form_view1">
+            <field name="sequence" eval="10" />
+            <field name="view" ref="fleet_view_tree" />
+            <field name="act_window" ref="act_fleet_form" />
+        </record>
+        <record model="ir.action.act_window.view" id="act_fleet_form_view2">
+            <field name="sequence" eval="20" />
+            <field name="view" ref="fleet_view_form" />
+            <field name="act_window" ref="act_fleet_form" />
+        </record>
+        <menuitem parent="menu_fleet_management" action="act_fleet_form"
+            id="menu_fleet_form" sequence="10" />
+
+        <record model="ir.action.act_window" id="act_fleet_form_new">
+            <field name="name">New Asset</field>
+            <field name="res_model">fleet.asset</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_fleet_form_new_view1">
+            <field name="sequence" eval="20" />
+            <field name="view" ref="fleet_view_tree" />
+            <field name="act_window" ref="act_fleet_form_new" />
+        </record>
+        <record model="ir.action.act_window.view" id="act_fleet_form_new_view2">
+            <field name="sequence" eval="10" />
+            <field name="view" ref="fleet_view_form" />
+            <field name="act_window" ref="act_fleet_form_new" />
+        </record>
+        <menuitem parent="menu_fleet_form" action="act_fleet_form_new"
+            id="menu_fleet_form_new" sequence="10"/>
+
+    </data>
+</tryton>
