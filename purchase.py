@@ -4,7 +4,7 @@
 from trytond.model import ModelSQL, ModelView, fields
 from trytond.pool import Pool
 from trytond.pyson import Eval, Equal, Not
-from trytond.wizard import Wizard
+from trytond.wizard import Wizard, StateView, Button, StateAction
 from trytond.report import Report
 
 
@@ -106,25 +106,19 @@ class FuelEfficiencyReport(Wizard):
     """
     _name = 'purchase.line.report_fuel_efficiency'
 
-    states = {
-        'init': {
-            'result': {
-                'type': 'form',
-                'object': 'purchase.line.fuel_efficency.init',
-                'state': [
-                    ('end', 'Cancel', 'tryton-cancel'),
-                    ('print', 'Print', 'tryton-print', True)
-                ],
-            },
-        },
-        'print': {
-            'result':{
-                'type': 'print',
-                'report': 'purchase.line.fuel_efficiency',
-                'state': 'end',
-            },
-        },
-    }
+    start = StateView('purchase.line.fuel_efficency.init',
+        'fleet_management.purchase_line_get_date_form', [
+            Button('Cancel', 'end', 'tryton-cancel'),
+            Button('Print', 'print_', 'tryton-print'),
+            ])
+    print_ = StateAction('fleet_management.generate_fuel_efficiency_report')
+
+    def do_print_(self, session, action):
+        data = {
+            'begin_date': session.start.begin_date,
+            'end_date': session.start.end_date,
+            }
+        return action, data
 
 FuelEfficiencyReport()
 
@@ -134,7 +128,7 @@ class GenerateFuelEfficiencyReport(Report):
     """
     _name = 'purchase.line.fuel_efficiency'
 
-    def parse(self, report, objects, datas, localcontext):
+    def parse(self, report, objects, data, localcontext):
         """Get all the purchase orders lines with in the range dates
         that are given in wizard, product type as fuel and the state
         is of done or confirmed.
@@ -150,17 +144,17 @@ class GenerateFuelEfficiencyReport(Report):
         res = {}
 
         purchase_line_ids = purchase_line_obj.search([
-            ('purchase.purchase_date', '>=',  datas['form']['begin_date']),
-            ('purchase.purchase_date', '<=',  datas['form']['end_date']),
+            ('purchase.purchase_date', '>=',  data['begin_date']),
+            ('purchase.purchase_date', '<=',  data['end_date']),
             ('purchase.state', 'in', ('done', 'confirmed')),
             ('product.fleet_management_type', '=', 'fuel')
             ])
 
         localcontext['purchase_lines'] = purchase_line_obj.browse(purchase_line_ids)
-        localcontext['begin_date'] = datas['form']['begin_date']
-        localcontext['end_date'] = datas['form']['end_date']
+        localcontext['begin_date'] = data['begin_date']
+        localcontext['end_date'] = data['end_date']
 
         return super(GenerateFuelEfficiencyReport, self).parse(report,
-            objects, datas, localcontext)
+            objects, data, localcontext)
 
 GenerateFuelEfficiencyReport()

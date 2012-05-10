@@ -34,7 +34,7 @@ setup(name='trytond_fleet_management',
     ],
     package_data={
         'trytond.modules.fleet_management': info.get('xml', []) \
-                + info.get('translation', []) + ['fuel_efficiency.odt']
+                + info.get('translation', [])
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',

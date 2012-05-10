@@ -16,7 +16,7 @@ class Product(ModelSQL, ModelView):
         ('fuel', 'Fuel'),
         ('tire', 'Tire'),
         ], "Fleet Management Type",
-        states={'invisible': Eval('type') != 'consumable'},
+        states={'invisible': Eval('type') != 'goods'},
         depends=['type'])
 
 Product()
