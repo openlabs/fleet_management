@@ -14,10 +14,12 @@ class Asset(ModelSQL, ModelView):
     _rec_name = 'code'
     _description = "Fleet Management Asset"
 
-    product = fields.Many2One('product.product', 'Product',
+    product = fields.Many2One(
+        'product.product', 'Product',
         domain=[
             ('type', '=', 'assets')
-            ], depends=['type'], required=True)
+            ], depends=['type'], required=True
+        )
     code = fields.Function(fields.Char('Code'), 'get_product_code')
     meter_unit =  fields.Many2One("product.uom", "Meter Unit", required=True,
         domain=[('category.name', '=', 'Length')])
@@ -92,13 +94,13 @@ class Asset(ModelSQL, ModelView):
     def get_product_code(self, ids, name):
         """Get the product code.
 
-        :param ids: A list of asset return IDs.
+        :param ids: A list of IDs.
         :param name: Name of the field.
         :return: Dictionary where key is ID and value is code of the product.
         """
         res = {}
-        for product in self.browse(ids):
-            res[product.id] = product.product.code
+        for asset in self.browse(ids):
+            res[asset.id] = asset.product.code
         return res
 
 Asset()
