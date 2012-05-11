@@ -11,6 +11,8 @@
             <field name="arch" type="xml">
                 <![CDATA[
                 <form string="New Asset">
+                    <label name="product" />
+                    <field name="product" />                    
                     <label name="code" />
                     <field name="code" />
                     <label name="meter_unit" />
